@@ -7,6 +7,12 @@ import {
 } from "@ant-design/icons";
 import { togglePortfolioModal } from "../store/cryptoSlice";
 import { useNavigate } from "react-router-dom";
+import {
+  TOP_ASSETS_COUNT,
+  CURRENCY_DIGITS_DEFAULT,
+  PERCENT_DIGITS,
+} from "../constants";
+import { selectCryptoItems, selectPortfolio } from "../store/cryptoSlice";
 
 const { Header: AntHeader } = Layout;
 const { Text } = Typography;
@@ -14,9 +20,9 @@ const { Text } = Typography;
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { items, portfolio } = useSelector((state) => state.crypto);
-  const topThree = items.slice(0, 3);
+  const items = useSelector(selectCryptoItems);
+  const portfolio = useSelector(selectPortfolio);
+  const topThree = items.slice(0, TOP_ASSETS_COUNT);
 
   const stats = portfolio.reduce(
     (acc, item) => {
@@ -44,12 +50,12 @@ const Header = () => {
         className="header-clickable"
         onClick={() => navigate("/")}
       >
-        <Text strong>ТОП-3:</Text>
+        <Text strong>ТОП-{TOP_ASSETS_COUNT}:</Text>
         {topThree.map((c) => (
           <Badge
             key={c.id}
             color="blue"
-            text={`${c.symbol}: $${Number(c.priceUsd).toFixed(2)}`}
+            text={`${c.symbol}: $${Number(c.priceUsd).toFixed(CURRENCY_DIGITS_DEFAULT)}`}
           />
         ))}
       </Space>
@@ -62,14 +68,14 @@ const Header = () => {
           <Statistic
             title="Ваш портфель"
             value={stats.currentTotal}
-            precision={2}
+            precision={CURRENCY_DIGITS_DEFAULT}
             prefix={<WalletOutlined />}
             suffix="$"
             className="statistic-small"
           />
           <Statistic
             value={diffPercent}
-            precision={2}
+            precision={PERCENT_DIGITS}
             className="statistic-small"
             prefix={diff >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
             suffix="%"

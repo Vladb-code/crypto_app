@@ -12,8 +12,22 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#1890ff",
-          borderRadius: 8,
+          colorPrimary: "#00f2ff",
+          colorBgBase: "#0f172a",
+          colorBgContainer: "#1e293b",
+          colorTextBase: "#f8fafc",
+          borderRadius: 12,
+        },
+        components: {
+          Table: {
+            headerBg: "#1e293b",
+            headerColor: "#94a3b8",
+            colorBgContainer: "#1e293b",
+          },
+          Modal: {
+            headerBg: "#1e293b",
+            contentBg: "#1e293b",
+          },
         },
       }}
     >
@@ -22,9 +36,14 @@ function App() {
           <Header />
           <PortfolioModal />
           <Content
-            style={{ flex: 1, display: "flex", flexDirection: "column" }}
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
           >
-            <div style={{ background: "#fff", padding: 24, borderRadius: 8 }}>
+            <div className="content-wrapper">
               <Routes>
                 <Route path="/" element={<CryptoTableRTK />} />
                 <Route path="/coin/:id" element={<CoinPage />} />

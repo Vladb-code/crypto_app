@@ -6,14 +6,19 @@ import {
   togglePortfolioModal,
   removeFromPortfolio,
 } from "../store/cryptoSlice";
-
+import {
+  selectPortfolio,
+  selectIsPortfolioModalOpen,
+  selectCryptoItems,
+} from "../store/cryptoSlice";
+import { CURRENCY_DIGITS_DEFAULT } from "../constants";
 const { Text, Title } = Typography;
 
 const PortfolioModal = () => {
   const dispatch = useDispatch();
-  const { portfolio, isPortfolioModalOpen, items } = useSelector(
-    (state) => state.crypto,
-  );
+  const portfolio = useSelector(selectPortfolio);
+  const isPortfolioModalOpen = useSelector(selectIsPortfolioModalOpen);
+  const items = useSelector(selectCryptoItems);
 
   const fmtCurrency = (val) => {
     return new Intl.NumberFormat("en-US", {
@@ -42,7 +47,9 @@ const PortfolioModal = () => {
           </Text>
           <Text strong type="primary" className="text-18">
             $
-            {totalValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {totalValue.toLocaleString(undefined, {
+              minimumFractionDigits: CURRENCY_DIGITS_DEFAULT,
+            })}
           </Text>
         </div>,
       ]}
@@ -72,12 +79,15 @@ const PortfolioModal = () => {
                       {Number(item.amount).toFixed(4)} {item.symbol}
                     </Text>
                     <Text italic className="font-12">
-                      курс: ${currentPrice.toFixed(2)}
+                      курс: ${currentPrice.toFixed(CURRENCY_DIGITS_DEFAULT)}
                     </Text>
                   </Flex>
                   <Flex align="center" gap="large">
                     <Text strong>
-                      ${(item.amount * currentPrice).toFixed(2)}
+                      $
+                      {(item.amount * currentPrice).toFixed(
+                        CURRENCY_DIGITS_DEFAULT,
+                      )}
                     </Text>
                     <Button
                       danger

@@ -29,6 +29,13 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import {
+  BILLION_THRESHOLD,
+  MILLION_THRESHOLD,
+  CURRENCY_DIGITS_TABLE,
+  CURRENCY_DIGITS_DEFAULT,
+  PERCENT_DIGITS,
+} from "../constants";
 
 const { Text, Title, Link } = Typography;
 
@@ -68,18 +75,18 @@ const CoinPage = () => {
   const formatLargeNumber = (value) => {
     if (!value) return "N/A";
     const num = parseFloat(value);
-    if (num >= 1000000000) {
-      return (num / 1000000000).toFixed(2) + " млрд";
+    if (num >= BILLION_THRESHOLD) {
+      return (num / BILLION_THRESHOLD).toFixed(2) + " млрд";
     }
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(2) + " млн";
+    if (num >= MILLION_THRESHOLD) {
+      return (num / MILLION_THRESHOLD).toFixed(2) + " млн";
     }
     return new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 }).format(
       num,
     );
   };
 
-  const formatNumber = (value, digits = 2) => {
+  const formatNumber = (value, digits = CURRENCY_DIGITS_DEFAULT) => {
     if (!value) return "N/A";
     return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: digits,
@@ -128,11 +135,11 @@ const CoinPage = () => {
                 ${formatLargeNumber(coin.volumeUsd24Hr)}
               </Descriptions.Item>
               <Descriptions.Item label="Средняя цена по объему за последние 24 часа">
-                ${formatNumber(coin.vwap24Hr, 4)}
+                ${formatNumber(coin.vwap24Hr, CURRENCY_DIGITS_TABLE)}
               </Descriptions.Item>
               <Descriptions.Item label="Процентные изменения цены за последние 24 часа">
                 <Text type={coin.changePercent24Hr >= 0 ? "success" : "danger"}>
-                  {Number(coin.changePercent24Hr).toFixed(2)}%
+                  {Number(coin.changePercent24Hr).toFixed(PERCENT_DIGITS)}%
                 </Text>
               </Descriptions.Item>
               <Descriptions.Item label="Сайт">
@@ -156,7 +163,7 @@ const CoinPage = () => {
               <Col>
                 <Statistic
                   value={coin.priceUsd}
-                  precision={4}
+                  precision={CURRENCY_DIGITS_TABLE}
                   prefix="$"
                   styles={{ content: { color: "#1890ff" } }}
                 />
@@ -180,16 +187,19 @@ const CoinPage = () => {
                     />
                     <YAxis hide domain={["auto", "auto"]} />
                     <Tooltip
-                      formatter={(value) => [`$${value.toFixed(4)}`, "Цена"]}
+                      formatter={(value) => [
+                        `$${value.toFixed(CURRENCY_DIGITS_TABLE)}`,
+                        "Цена",
+                      ]}
                       labelStyle={{ color: "#888" }}
                     />
                     <Line
                       type="monotone"
                       dataKey="priceUsd"
-                      stroke="#1890ff"
-                      dot={false}
+                      stroke="#00f2ff"
                       strokeWidth={3}
-                      isAnimationActive={false}
+                      dot={false}
+                      filter="drop-shadow(0px 0px 8px rgba(0, 242, 255, 0.5))"
                     />
                   </LineChart>
                 </ResponsiveContainer>

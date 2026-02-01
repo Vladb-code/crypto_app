@@ -1,6 +1,24 @@
 /* --- Глобальные и Layout стили --- */
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #0f172a;
+}
+
+body {
+  display: block;
+  color: #f8fafc;
+}
+
 .app-layout {
   min-height: 100vh;
+  width: 100%;
+  background: #0f172a !important;
 }
 
 .app-content {
@@ -9,27 +27,35 @@
   flex-direction: column;
 }
 
+/* Контейнер теперь как приподнятая карточка */
 .content-wrapper {
-  background: #fff;
+  background: #1e293b;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   flex: 1;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Хедер (Фикс синего фона и выравнивание) --- */
+/* --- Хедер (Эффект стекла) --- */
 .ant-layout-header.header-container {
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff !important; /* Принудительно белый */
-  border-bottom: 1px solid #f0f0f0;
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #334155;
   padding: 0 24px;
   height: 64px;
   line-height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header-clickable {
   cursor: pointer;
+  color: #00f2ff;
 }
 
 .header-portfolio {
@@ -37,135 +63,134 @@
   display: flex;
   align-items: center;
   line-height: 1.2;
+  transition: opacity 0.2s;
 }
 
-/* Настройка шрифтов в статистике хедера */
+.header-portfolio:hover {
+  opacity: 0.8;
+}
+
+/* Настройка шрифтов статистики */
 .statistic-small .ant-statistic-content {
   font-size: 16px !important;
   display: flex;
   align-items: center;
+  color: #f8fafc !important;
 }
 
 .statistic-small .ant-statistic-title {
   margin-bottom: 0 !important;
   font-size: 12px;
+  color: #94a3b8 !important;
 }
 
-/* --- Таблица и Пагинация (Центрирование) --- */
+/* --- Таблица и Пагинация --- */
 .table-container {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* Принудительное центрирование пагинации Ant Design */
+/* Темная таблица */
+.ant-table {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+
+.ant-table-thead > tr > th {
+  background: #1e293b !important;
+  color: #94a3b8 !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #1e293b !important;
+}
+
+.ant-table-row:hover > td {
+  background: #334155 !important;
+}
+
 .ant-table-wrapper .ant-table-pagination.ant-pagination {
-  justify-content: center !important;
   float: none !important;
   display: flex !important;
-  width: 100% !important;
+  justify-content: center !important;
   margin: 24px 0 !important;
 }
 
-.row-pointer {
-  cursor: pointer;
+.ant-pagination-item a {
+  color: #94a3b8 !important;
 }
 
-/* --- Модальное окно портфеля --- */
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.ant-pagination-item-active {
+  border-color: #00f2ff !important;
+  background: transparent !important;
 }
 
-.text-large {
-  font-size: 18px;
+.ant-pagination-item-active a {
+  color: #00f2ff !important;
 }
 
-.portfolio-list {
-  margin-top: 20px;
+/* --- Кастомные теги (Неоновые) --- */
+.ant-tag-green {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
 }
 
-.font-small {
-  font-size: 12px;
-}
-
-.w-100 {
-  width: 100%;
+.ant-tag-red {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
 }
 
 /* --- Страница монеты (CoinPage) --- */
 .coin-page-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  color: #f8fafc;
 }
 
-.margin-b-16 {
-  margin-bottom: 16px;
+.ant-card {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #f8fafc !important;
 }
 
-.margin-b-24 {
-  margin-bottom: 24px;
+.ant-card-head-title {
+  color: #f8fafc !important;
 }
 
-.chart-container {
-  width: 100%;
-  height: 400px;
-  min-width: 0;
-  margin-top: 24px;
+.ant-descriptions-item-label {
+  color: #94a3b8 !important;
 }
 
-.chart-placeholder {
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.ant-descriptions-item-content {
+  color: #f8fafc !important;
 }
 
-/* --- АДАПТИВНОСТЬ (МОБИЛЬНАЯ ВЕРСИЯ) --- */
+/* --- СТИЛИ ДЛЯ НОУТБУКОВ --- */
+@media (min-width: 769px) {
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding: 12px 8px !important;
+  }
+}
+
+/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
 @media (max-width: 768px) {
-  /* Перестраиваем хедер в две строки на мобилках */
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+  }
+
+  .content-wrapper {
+    padding: 12px !important;
+  }
+
   .ant-layout-header.header-container {
     height: auto !important;
     flex-direction: column !important;
-    padding: 12px !important;
-    line-height: normal !important;
-  }
-
-  .header-clickable {
-    margin-bottom: 8px;
-    width: 100%;
-    justify-content: center;
-    font-size: 12px;
-  }
-
-  /* Упрощаем статистику в хедере, чтобы не занимала много места */
-  .statistic-small .ant-statistic-title {
-    display: none; /* Скрываем надпись "Ваш портфель" на малых экранах */
-  }
-
-  .header-portfolio {
-    width: 100%;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  /* Уменьшаем отступы контента */
-  .content-wrapper {
-    padding: 12px;
-    border-radius: 0; /* На мобилках лучше без скруглений по бокам */
-  }
-
-  /* Увеличиваем кликабельные зоны для пальцев */
-  .ant-table-cell {
-    padding: 12px 8px !important;
-  }
-
-  /* Модальное окно делаем шире */
-  .ant-modal {
-    max-width: 95vw;
-    margin: 10px auto;
+    padding: 16px !important;
+    gap: 8px;
   }
 }
